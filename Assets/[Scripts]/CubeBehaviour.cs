@@ -56,6 +56,7 @@ public class CubeBehaviour : MonoBehaviour
     public Vector3 size;
     public Vector3 max;
     public Vector3 min;
+    public Vector3 half;
     public bool isColliding;
     public bool debug;
     public List<Contact> contacts;
@@ -81,7 +82,7 @@ public class CubeBehaviour : MonoBehaviour
     {
         max = Vector3.Scale(bounds.max, transform.localScale) + transform.position;
         min = Vector3.Scale(bounds.min, transform.localScale) + transform.position;
-
+        half = Vector3.Scale(bounds.min, transform.localScale) * 0.5f;
     }
 
     private void OnDrawGizmos()

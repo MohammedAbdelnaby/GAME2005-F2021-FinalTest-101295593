@@ -50,13 +50,11 @@ public class PlayerBehaviour : MonoBehaviour
                 // move left
                 body.velocity = -playerCam.transform.right * speed * Time.deltaTime;
             }
-
             if (Input.GetAxisRaw("Vertical") > 0.0f)
             {
                 // move forward
                 body.velocity = playerCam.transform.forward * speed * Time.deltaTime;
             }
-
             if (Input.GetAxisRaw("Vertical") < 0.0f) 
             {
                 // move Back
@@ -65,14 +63,17 @@ public class PlayerBehaviour : MonoBehaviour
 
             body.velocity = Vector3.Lerp(body.velocity, Vector3.zero, 0.9f);
             body.velocity = new Vector3(body.velocity.x, 0.0f, body.velocity.z); // remove y
-            
 
             if (Input.GetAxisRaw("Jump") > 0.0f)
             {
-                body.velocity = transform.up * speed * 0.1f * Time.deltaTime;
-                //body.velocity = playerCam.transform.forward * speed * Time.deltaTime;
-
+                body.velocity = (transform.up * speed * 0.1f * Time.deltaTime);
             }
+
+            if (Input.GetKey("f"))
+            {
+                body.velocity = ((playerCam.transform.forward / 15) - transform.up * speed * 0.1f * Time.deltaTime) / 3;
+            }
+
 
             transform.position += body.velocity;
         }
@@ -93,7 +94,7 @@ public class PlayerBehaviour : MonoBehaviour
                         if (contacts.GetComponent<RigidBody3D>().bodyType == BodyType.DYNAMIC)
                         {
                             Debug.Log(contacts.gameObject.name);
-                            contacts.transform.position += (playerCam.transform.forward * speed * Time.deltaTime) * 2;
+                            contacts.transform.position += (playerCam.transform.forward * speed * Time.deltaTime) * 10;
                         }
                     }
                 }
