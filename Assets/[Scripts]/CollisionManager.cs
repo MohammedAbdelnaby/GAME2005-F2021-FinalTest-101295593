@@ -57,27 +57,67 @@ public class CollisionManager : MonoBehaviour
 
     }
 
-    public static void CheckSphereAABB(BulletBehaviour s, CubeBehaviour b)
+    public static void CheckSphereAABB(BulletBehaviour a, CubeBehaviour b)
     {
-        // get box closest point to sphere center by clamping
-        var x = Mathf.Max(b.min.x, Mathf.Min(s.transform.position.x, b.max.x));
-        var y = Mathf.Max(b.min.y, Mathf.Min(s.transform.position.y, b.max.y));
-        var z = Mathf.Max(b.min.z, Mathf.Min(s.transform.position.z, b.max.z));
+        //// get box closest point to sphere center by clamping
+        //var x = Mathf.Max(b.min.x, Mathf.Min(s.transform.position.x, b.max.x));
+        //var y = Mathf.Max(b.min.y, Mathf.Min(s.transform.position.y, b.max.y));
+        //var z = Mathf.Max(b.min.z, Mathf.Min(s.transform.position.z, b.max.z));
 
-        var distance = Math.Sqrt((x - s.transform.position.x) * (x - s.transform.position.x) +
-                                 (y - s.transform.position.y) * (y - s.transform.position.y) +
-                                 (z - s.transform.position.z) * (z - s.transform.position.z));
+        //var distance = Math.Sqrt((x - s.transform.position.x) * (x - s.transform.position.x) +
+        //                         (y - s.transform.position.y) * (y - s.transform.position.y) +
+        //                         (z - s.transform.position.z) * (z - s.transform.position.z));
 
-        if ((distance < s.radius) && (!s.isColliding))
+        //if ((distance < s.radius) && (!s.isColliding))
+        //{
+        //    // determine the distances between the contact extents
+        //    float[] distances = {
+        //        (b.max.x - s.transform.position.x),
+        //        (s.transform.position.x - b.min.x),
+        //        (b.max.y - s.transform.position.y),
+        //        (s.transform.position.y - b.min.y),
+        //        (b.max.z - s.transform.position.z),
+        //        (s.transform.position.z - b.min.z)
+        //    };
+
+        //    float penetration = float.MaxValue;
+        //    Vector3 face = Vector3.zero;
+
+        //    // check each face to see if it is the one that connected
+        //    for (int i = 0; i < 6; i++)
+        //    {
+        //        if (distances[i] < penetration)
+        //        {
+        //            // determine the penetration distance
+        //            penetration = distances[i];
+        //            face = faces[i];
+        //        }
+        //    }
+
+        //    s.penetration = penetration;
+        //    s.collisionNormal = face;
+        //    //s.isColliding = true;
+
+
+        //    Reflect(s);
+        //}
+        CubeBehaviour Bullet = a.Cube;
+        CubeBehaviour Box = b;
+        //Contact contactB = new Contact(b);
+
+        if ((Bullet.min.x <= b.max.x && Bullet.max.x >= b.min.x) &&
+            (Bullet.min.y <= b.max.y && Bullet.max.y >= b.min.y) &&
+            (Bullet.min.z <= b.max.z && Bullet.max.z >= b.min.z))
         {
             // determine the distances between the contact extents
-            float[] distances = {
-                (b.max.x - s.transform.position.x),
-                (s.transform.position.x - b.min.x),
-                (b.max.y - s.transform.position.y),
-                (s.transform.position.y - b.min.y),
-                (b.max.z - s.transform.position.z),
-                (s.transform.position.z - b.min.z)
+            float[] distances =
+            {
+                (b.max.x - Bullet.min.x),
+                (Bullet.max.x - b.min.x),
+                (b.max.y - Bullet.min.y),
+                (Bullet.max.y - b.min.y),
+                (b.max.z - Bullet.min.z),
+                (Bullet.max.z - b.min.z)
             };
 
             float penetration = float.MaxValue;
@@ -94,16 +134,16 @@ public class CollisionManager : MonoBehaviour
                 }
             }
 
-            s.penetration = penetration;
-            s.collisionNormal = face;
-            //s.isColliding = true;
+            // set the contact properties
+            a.collisionNormal = face;
+            a.penetration = penetration;
 
-            
-            Reflect(s);
+            Reflect(a);
         }
-
     }
-    
+
+
+
     // This helper function reflects the bullet when it hits an AABB face
     private static void Reflect(BulletBehaviour s)
     {
@@ -176,7 +216,7 @@ public class CollisionManager : MonoBehaviour
                     a.gameObject.GetComponent<RigidBody3D>().Stop();
                     a.isGrounded = true;
                 }
-                
+
 
                 // add the new contact
                 a.contacts.Add(contactB);

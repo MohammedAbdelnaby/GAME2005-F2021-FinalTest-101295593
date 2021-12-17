@@ -10,9 +10,6 @@ public class BulletBehaviour : MonoBehaviour
     public float range;
     public float radius;
     public Vector3 size;
-    public Vector3 max;
-    public Vector3 min;
-    public Vector3 half;
     public bool debug;
     public bool isColliding;
     public Vector3 collisionNormal;
@@ -20,6 +17,7 @@ public class BulletBehaviour : MonoBehaviour
     private MeshFilter meshFilter;
     public Bounds bounds;
     public BulletManager bulletManager;
+    public CubeBehaviour Cube;
 
     // Start is called before the first frame update
     void Start()
@@ -34,9 +32,7 @@ public class BulletBehaviour : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        max = Vector3.Scale(bounds.max, transform.localScale) + transform.position;
-        min = Vector3.Scale(bounds.min, transform.localScale) + transform.position;
-        half = Vector3.Scale(bounds.min, transform.localScale) * 0.5f;
+
         _Move();
         _CheckBounds();
     }
