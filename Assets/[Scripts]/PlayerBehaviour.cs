@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class PlayerBehaviour : MonoBehaviour
 {
@@ -33,6 +34,7 @@ public class PlayerBehaviour : MonoBehaviour
         _Fire();
         _Move();
         _Push();
+        _Back();
     }
 
     private void _Move()
@@ -66,7 +68,7 @@ public class PlayerBehaviour : MonoBehaviour
 
             if (Input.GetAxisRaw("Jump") > 0.0f)
             {
-                body.velocity = (transform.up * speed * 0.1f * Time.deltaTime);
+                body.velocity += (transform.up * speed * 0.1f * Time.deltaTime);
             }
 
             if (Input.GetKey("f"))
@@ -81,7 +83,6 @@ public class PlayerBehaviour : MonoBehaviour
 
     void _Push()
     {
-
         if (Input.GetKey("e"))
         {
             if (GunBarral.isColliding)
@@ -99,6 +100,14 @@ public class PlayerBehaviour : MonoBehaviour
                     }
                 }
             } 
+        }
+    }
+    private void _Back()
+    {
+        if (Input.GetKey("p"))
+        {
+            SceneManager.LoadScene(0);
+            Cursor.lockState = CursorLockMode.None;
         }
     }
     private void _Fire()

@@ -7,7 +7,7 @@ using UnityEngine;
 public class CollisionManager : MonoBehaviour
 {
     public CubeBehaviour[] cubes;
-    public BulletBehaviour[] spheres;
+    public BulletBehaviour[] Bullets;
 
     private static Vector3[] faces;
 
@@ -27,7 +27,7 @@ public class CollisionManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        spheres = FindObjectsOfType<BulletBehaviour>();
+        Bullets = FindObjectsOfType<BulletBehaviour>();
 
         // check each AABB with every other AABB in the scene
         for (int i = 0; i < cubes.Length; i++)
@@ -42,13 +42,13 @@ public class CollisionManager : MonoBehaviour
         }
 
         // Check each sphere against each AABB in the scene
-        foreach (var sphere in spheres)
+        foreach (var Bulletsobjs in Bullets)
         {
             foreach (var cube in cubes)
             {
                 if (cube.name != "Player")
                 {
-                    CheckSphereAABB(sphere, cube);
+                    CheckBulletAABB(Bulletsobjs, cube);
                 }
                 
             }
@@ -57,50 +57,8 @@ public class CollisionManager : MonoBehaviour
 
     }
 
-    public static void CheckSphereAABB(BulletBehaviour a, CubeBehaviour b)
+    public static void CheckBulletAABB(BulletBehaviour a, CubeBehaviour b)
     {
-        //// get box closest point to sphere center by clamping
-        //var x = Mathf.Max(b.min.x, Mathf.Min(s.transform.position.x, b.max.x));
-        //var y = Mathf.Max(b.min.y, Mathf.Min(s.transform.position.y, b.max.y));
-        //var z = Mathf.Max(b.min.z, Mathf.Min(s.transform.position.z, b.max.z));
-
-        //var distance = Math.Sqrt((x - s.transform.position.x) * (x - s.transform.position.x) +
-        //                         (y - s.transform.position.y) * (y - s.transform.position.y) +
-        //                         (z - s.transform.position.z) * (z - s.transform.position.z));
-
-        //if ((distance < s.radius) && (!s.isColliding))
-        //{
-        //    // determine the distances between the contact extents
-        //    float[] distances = {
-        //        (b.max.x - s.transform.position.x),
-        //        (s.transform.position.x - b.min.x),
-        //        (b.max.y - s.transform.position.y),
-        //        (s.transform.position.y - b.min.y),
-        //        (b.max.z - s.transform.position.z),
-        //        (s.transform.position.z - b.min.z)
-        //    };
-
-        //    float penetration = float.MaxValue;
-        //    Vector3 face = Vector3.zero;
-
-        //    // check each face to see if it is the one that connected
-        //    for (int i = 0; i < 6; i++)
-        //    {
-        //        if (distances[i] < penetration)
-        //        {
-        //            // determine the penetration distance
-        //            penetration = distances[i];
-        //            face = faces[i];
-        //        }
-        //    }
-
-        //    s.penetration = penetration;
-        //    s.collisionNormal = face;
-        //    //s.isColliding = true;
-
-
-        //    Reflect(s);
-        //}
         CubeBehaviour Bullet = a.Cube;
         CubeBehaviour Box = b;
         //Contact contactB = new Contact(b);
